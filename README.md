@@ -3,6 +3,15 @@
 
 # Description:
 This is where I'll post everything I have learned about C++ from [Learn Cpp](https://www.learncpp.com/).
+Various other sources will also be used such as:
+ 1. [Tutorials Point](https://www.tutorialspoint.com/cplusplus/cpp_overview.htm)
+ 2. [Simplilearn](https://www.simplilearn.com/resources/software-development)
+ 3. [Programmiz](https://www.programiz.com/cpp-programming) - this is a great resource because it has several example program files
+ and various others.
+
+# Notes:
+
+## Basics
 
 ### Run time vs compile time
 
@@ -243,24 +252,24 @@ const double gravity = 9.98;
 
 ### Chapter 5 operators
 #### Some operators:
-| Operator     | Description   |
-| ------------ | --------------|
-|    `%`       |               |
-|    `++`      |               |
-|    `--`      |               |               
-|    `&`       |               |
-|    `*`       |               |
-|    `*=`      |               |
-|    `/=`      |               |
-|    `%=`      |               |
-| `+=` and `-=`|               |
-|     `?:`     |               |
-|   `new`      |               |
-|  `delete`    |               |
-|  `&&` or `&` |               |
-| `||` or `|`  |               |
-|    `^`       |               |
-|    `!=`      |               |
+                                        | Operator            | Description          |
+                                        | ------------------- | -------------------- |
+                                        |    `%`              |                      |
+                                        |    `++`             |                      |
+                                        |    `--`             |                      |               
+                                        |    `&`              |                      |
+                                        |    `*`              |                      |
+                                        |    `*=`             |                      |
+                                        |    `/=`             |                      |
+                                        |    `%=`             |                      |
+                                        | `+=` and `-=`       |                      |
+                                        |     `?:`            |                      |
+                                        |   `new`             |                      |
+                                        |  `delete`           |                      |
+                                        |  `&&` or `&`        |                      |
+                                        | `||` or `|`         |                      |
+                                        |    `^`              |                      |
+                                        |    `!=`             |                      |
 
 #### exponentiation & math functions
 We need the `cmath` library.
@@ -277,7 +286,7 @@ Due to arithmetic errors we should compare floating point values using: `std::ab
 
 ### Chapter O
 #### Bit manipulation
-In the majority of cases, this is fine -- we’re usually not so hard-up for memory that we need to care about 7 wasted bits (we’re better off optimizing for understandability and maintainability). However, in some storage-intensive cases, it can be useful to “pack” 8 individual Boolean values into a single byte for storage efficiency purposes.
+In the majority of cases, this is fine -- we're usually not so hard-up for memory that we need to care about 7 wasted bits (we’re better off optimizing for understandability and maintainability). However, in some storage-intensive cases, it can be useful to "pack" 8 individual Boolean values into a single byte for storage efficiency purposes.
 
 Doing these things requires that we can manipulate objects at the bit level. Fortunately, C++ gives us tools to do precisely this. Modifying individual bits within an object is called bit manipulation.
 
@@ -368,13 +377,13 @@ foo::add(1,2)
 
 ### Chapter 7 - Control Flow
 #### Types of control flow
-|       Category           |         Description         |
-|  --------------------    |   -----------------------   |
-|      conditional         |                             |
-|        halts             |                             |
-|       loops              |                             |
-|       halts              |                             |
-|       Exceptions         |                             |
+                                    |       Category           |         Description         |
+                                    |  --------------------    |   -----------------------   |
+                                    |      conditional         |                             |
+                                    |        halts             |                             |
+                                    |       loops              |                             |
+                                    |       halts              |                             |
+                                    |       Exceptions         |                             |
 
 #### Break statement and continue
  - A `break` statement terminates the switch or loop, and execution continues at the first statement beyond the switch or loop. 
@@ -471,9 +480,295 @@ max<int>(1,2)
 ```
 **NOTE** you have to be careful about defining template helper functions in other files.
 
-### Chapter 9 - intro to: pointers, pass by address, enums, structs
+### Chapter 9 - intro to: references, pointers, pass by address, enums, structs
 
+#### lvalue & rvalue:
+
+
+#### References:
+ - A reference is an alias for an existing object. Once a reference has been defined, any operation on the reference is applied to the object being referenced.
+ - A reference is essentially identical to the object being referenced.
+ - References can be created  with the `&` operator, placed next to the type.
+```
+int      // a normal int type
+int&     // an lvalue reference to an int object
+double&  // an lvalue reference to a double object
+
+int x { 5 };    // x is a normal integer variable
+int& ref { x }; // ref is an lvalue reference variable that can now be used as an alias for variable x
+
+to change the value of the original object just call it like so:
+ref = 6; 
+```
+ - Once initialized, a reference in C++ **cannot be reseated**, meaning it cannot be changed to reference another object.
+ - Refs are not suitable for `const`.
+
+#### Pass by reference
+ - When passing by value the object is copied into the function, which is expensive for objects like std::string.
+ - passing by reference avoids making expesnive copies
+ - THis is done by `<return> <function>(<type>& arg)`.
+For example
+```
+void foo(int a, char& b, const std::string& c)
+{
+  c[a] = b; // modify the string c which will modify the original string
+  std::cout << c;
+}
+```
+
+#### Pointers
+ - [The difference between references and pointers](https://www.educative.io/edpresso/differences-between-pointers-and-references-in-cpp).
+
+ - **Operators:**
+    - `&x` (not like `int& x`) is the **address-of** operator.
+    - The address-of operator (&) returns the memory address of its operand. e.g. printing `&x` returns 0027FEA0.
+    - the dereference operator `*` returns the value at given memory address. E.g. `std::cout << *(&X)` returns the value stored by x.
+ - A pointer is an object that holds a **memory address** (typically of another variable) as its value.
+ - pointers are initialised using the `*` operator after the type such as `int* ptr` which initialises a pointer to an integer.
+ - `int* ptr{ &x }` this pointer variable holds the adddress of x
+ - We can change what the pointer points to by assigning it to the address of another variable.
+ ```
+ // Initialise a pointer that points to the integer x
+ int x{ 5 };
+ int* ptr{ &x };
+
+ // We can reassign the pointer
+ int y{ 6 };
+ ptr = &y; // // change ptr to point at y
+
+ // Access the stored value
+ std::cout << *ptr;
+ ```
+ - Const pointers cannot be changed after initilisation.
+
+ #### NULL pointers
+ - **NOTE** A pointer should either hold the address of a valid object, or be set to nullptr. That way we only need to test pointers for null, and can assume any non-null pointer is valid.
+ - We can initialise null pointers with: `int* ptr {};` or `int* ptr { nullptr };` or `double* ptr { NULL };`.
+ - We can check to see if a pointer is a null pointer, with `if (ptr)`, as it is automatically converted to a boolean (True).
+ - Favor references over pointers unless the additional capabilities provided by pointers are needed.
+
+#### Pass by address
+To do this we specify the function argument as a pointer e.g.
+```
+void print(int* ptr)
+{
+    if (ptr) // if ptr is not a null pointer
+    {
+        std::cout << *ptr;
+    }
+}
+```
+(Just like we can pass a normal variable by reference, we can also pass pointers by reference)[https://www.learncpp.com/cpp-tutorial/pass-by-address-part-2/]. 
+
+Pass by address vs pass by reference: 
+Prefer pass by reference to pass by address unless you have a specific reason to use pass by address.
+
+#### Return by reference
+In previous lessons, we discussed that when passing an argument by value, a copy of the argument is made into the function parameter. For fundamental types (which are cheap to copy), this is fine. But copying is typically expensive for class types (such as std::string). 
+
+Notes:
+* We can avoid making an *expensive* copy by utilizing passing by (const) reference (or pass by address) instead.
+* `const std::string& getProgramName() {// function code}`
+* Return by address works almost identically to return by reference, except a pointer to an object is returned instead of a reference to an object. Return by address has the same primary caveat as return by reference -- the object being returned by address must outlive the scope of the function returning the address, otherwise the caller will receive a **dangling pointer**.
+  * *wild* pointers are pointers yet to be initalised but *dangling* pointers are for pointers that refer to objects that hare no longer valid. 
+* The major advantage of return by address over return by reference is that we can have the function return nullptr if there is no valid object to return.
+
+#### User-defined types
+We can define our own types, below is the user defined type defined in the header file:
+
+`Fraction.h`
+```
+#ifndef FRACTION_H
+#define FRACTION_H
+
+// Define a new type named Fraction
+// This only defines what a Fraction looks like, it doesn't create one
+// Note that this is a full definition, not a forward declaration
+struct Fraction
+{
+	int numerator {};
+	int denominator {};
+};
+
+#endif
+```
+We can initialise this with something like: `Fraction frac{ 3, 4 };` which creates a fraction type frac 
+
+#### Enumerations (Enums)
+* An enumeration (also called an enumerated type or an enum) is a compound data type where every possible value is defined as a symbolic constant (called an enumerator).
+* They are **initialised** with the keyword `enum`.
+* Enums or enumerations are generally used when you expect the variable to select one value from the possible set of values. 
+* It increases the abstraction and enables you to focus more on values rather than worrying about how to store them. It is also helpful for code documentation and readability purposes.
+* create a new data type that has a **fixed range of possible values**.
+* They are defined in the global scope.
+* They are implicitly converted to integral values.
+  * Something like `print(red)` could return an int.
+  * Another example of this could be `red + 5` will give an intergal value.
+
+###### Scoped vs unscoped
+* **Scoped enums** are declared with `enum Class <NAME>` and we can access enum names with the `::` operator.
+* *Prefer* scoped enums over unscoped enums.
+* Scoped enums are not implicitly converted to integers.
+
+![](https://www.simplilearn.com/ice9/free_resources_article_thumb/C%2B%2B_Enum_Example5.PNG)
+
+##### Taking enums as inputs examples
+The compiler and commands like `cin` don't explicitly know how to interpret inputs when dealing with enums.
+```
+int main()
+{
+    std::cout << "Enter a pet (0=cat, 1=dog, 2=pig, 3=whale): ";
+
+    int input{};
+    std::cin >> input; // input an integer
+
+    Pet pet{ static_cast<Pet>(input) }; // static_cast our integer to a Pet
+
+    return 0;
+}
+```
+#### structs, members and member selection
+* structs are a collection of variables of different data types under a single name.
+* It is created with the `struct` keyword.
+* It is similar to a class.
+The struct is only a blueprint for creating variables and needs to be initialised.
+* struct members are accessed with the `.` operator.
+* Structs can have members of     *different* types.
+
+Structs can have the values assigned initally or be assigned with a list of sorts.
+```
+// struct definition
+struct Employee
+{
+  int id{}
+  double wage{}
+}
+
+// Instantiate struct
+Employee joe {1, 60000.0}
+
+// update single value
+Emplyee joe {joe.id, 70000.0}
+```
+##### Structs as argguments
+* Structs can be passed in by reference and address and the `.` can be used.
+* If we make a pointer to a struct
+`Employee* ptr{ &joe }` where `ptr` is the pointer of type 'Employee' pointing to the address of the struct `joe`.
+* We can access the member with the `->` operator or by dereferencing `(*ptr).id`.
+  * e.g. `ptr -> id`.
+
+## Advanced
 ### Chapter 10 - Arrays, Strings, Pointers, and References
+#### Sorting Arrays
+Arrays can be sorted with 
+`std::sort` which lives in the `<algorithm>` header.
+#### Read only strings - std::string_view
+* It can be thought of as a special datatype that lets us safely view (ie. without modification) a string defined elsewhere - whereas `std::string` copies the string.
+* This lives in the `<string_view>` header.
+* It has the same functions, such as:
+  * `.remove_suffix`
+  * `.remove_prefix`
+  * ``
+* It is important **not** to modify a string during its runtime.
+
+#### Pointer arithmetic
+* C++ allows us to perform integer additon with pointers e.g. `ptr + 5`.
+* This allows us to access consecutive elements of arrays: `*(array + n) is equal to array[n]`. `[]` Is actually pointer arithmetic under the hood!
+* Functions like `std::begin` and `std::end` from the `<iterators>` header return a pointer to the first and last elements of an array.
+*  Another useful example is the `std::countif(std::begin(<array>), std::end(<array>), <function_name>)` function. This counts the number of measurements that meet a condition.
+
+#### Dyanmic memory - recap
+Dangling pointers can occur if:
+* Pointers go out of scope, e.g. declared and not deleted in a function call.
+* Assigned a new value *before*
+
+Solution: only assign to a pointer once, and always use `delete`.
+In the case of arrays we should use `delete[]`.
+
+#### Dynamic Array allocation
+* Declaring a dynamic 1D array:
+`int* array{ new int[length]{} };` or `int* array = new int[5]`.
+
+How it can be visualised:
+![](https://cdn.programiz.com/sites/tutorial2program/files/cpp-pointers-and-arrays.png)
+
+Declaring a 2D array:
+A standard 2D array would be declared like `int array[10][20]`.
+We declare a dynamic M x N array with `int** array = new int*[M]` This creates a pointer to a pointer of size M.
+`array` points to each row (which is an object with several columns).
+```
+// For each pointer (referring to a row)
+// allocate memory for several columns.
+for(int i = 0; i < rowCount; ++i)
+    a[i] = new int[colCount];
+```
+We must also use a loop to `delete[]` each row array individually.
+
+![](https://i.stack.imgur.com/M75kn.png)
+
+#### For-each loops
+These are of the form `for (<type> <element> : <array>) {...}`.
+There are several variations of this:
+```
+// some numbers to iterate over
+int Fibonacci[] {1,1,2,3,5,8,13,21}
+
+// for-each loop with auto kw
+for (auto number : Fibonacci){
+  std::cout << number
+}
+
+// To avoid copying each array element (which is expensive) use references
+for (auto& element : Fibonacci){
+  std::cout << element
+}
+```
+Note that if we are only using elements in a read only way its best to use const
+
+#### void pointer/ generic pointer
+This can point to objects of *any* data type!
+It is initiaised with `void* ptr;` and can point to anything - like a `struct`, `int` `float` etc...
+BUT dereferencing is **illegal** so the pointer must be cast to a different type.
+`int* intPtr{ static_cast<int*>(voidPtr) }`
+
+Generally these should be avoided but they are neat!
+
+#### Intro to std::array - safe fixed size arrays
+* defined in the `<array>` header
+* defines a fixed array functionality
+* declared with `std::array<int, 3> myArray;`
+* you can also do `std::array myArray {1,2,3}`
+* it can be indexed with ``[]` or `.at(<index>)` which also does bounds checking.
+* length can be found with `.size()`
+* aggregate type so we can store multiple types in it.
+
+#### Intro to std::vector - safe dynamic arrays
+* lives in the `<vector>` header
+* don't have to use `new` or `delete`
+* declaration is simple - no need to specify length
+  * `std::vector<int> array;`
+  * `std::vector<int> array2 {1,2,3}`
+* Can be indexed with `[]` and `.at()`
+* It has its own memory management system - it automatically deallocates the memory when it goes out of scope.
+* length can be found with `.size()`.
+* It can also be **resized** with `.resize` which will allocate more elements with 0 entries (default value for the type). This is very computationally expensive so try to avoid it!
+
+#### Iterators and standard algorithms
+An iterator is an object designed to traverse through a **container**, providing access to each element along the way.
+
+examples
+* array - this container might offer a forwards iterator, that walks through the array in a forwards order.
+* Pointers are iterators - they traverse data stored sequentially. 
+* `std::begin()` and `std::end()`.
+
+##### Intro to Standard Library Algorithms:
+There are 3 categories: `<algorithm>`
+* Inspectors - view but not modify data in container (e.g. searching and counting)
+  * `std::find()`
+* Mutators - modify data in container (e.g. sorting/shuffling)
+  * `std::sort()`
+* Facilitators - used to generate results from values in data
+  * `std::for_each()`
 
 ### Chapter 11 - Functions V3
 
