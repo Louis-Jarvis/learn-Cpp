@@ -66,7 +66,7 @@ There are varous ways of initialising variables:
 ```
 int a;
 int b = 5;
-int d{7}
+int d{7};
 ```
 You must declare the type: one of `int`, `float`,`double`,`bool`, `char`.
 Variables can be declared without being initialised.
