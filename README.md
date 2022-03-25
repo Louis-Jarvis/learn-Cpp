@@ -741,36 +741,142 @@ Generally these should be avoided but they are neat!
 * it can be indexed with ``[]` or `.at(<index>)` which also does bounds checking.
 * length can be found with `.size()`
 * aggregate type so we can store multiple types in it.
+* Example: creating an array of string types
+  `std::array<std::string_view, 5> arr{ "apple", "banana", "walnut", "lemon", "peanut" };`
 
 #### Intro to std::vector - safe dynamic arrays
 * lives in the `<vector>` header
 * don't have to use `new` or `delete`
-* declaration is simple - no need to specify length
+* declaration is simple - no need to specify length - we just need the type of each element.
   * `std::vector<int> array;`
   * `std::vector<int> array2 {1,2,3}`
+* We can howwever created a fixed size vector (e.g. of size 5) `std::vector<int> array(5);` 
 * Can be indexed with `[]` and `.at()`
 * It has its own memory management system - it automatically deallocates the memory when it goes out of scope.
 * length can be found with `.size()`.
+* values can be inserted with `.push_back()` or removed with `pop_back()` or `.erase()` which takes the position.
 * It can also be **resized** with `.resize` which will allocate more elements with 0 entries (default value for the type). This is very computationally expensive so try to avoid it!
+
+## we can declare 2D arrays like
+* `vector<vector<int>> v {{1, 0, 1}, {0, 1}, {1, 0, 1}};` [see](https://www.journaldev.com/42023/2d-vectors-in-c-plus-plus)
+  * This initialises the matrix `v`:
+    1 0 1
+    0 1
+    1 0 1
+* `vector<vector<>>` means we are creating a vector for which each element is a vector
+* we can access elements with `v[i][j]`.
+* Example: removing a row using iterators
+  ```
+      // Iterator for the 2-D vector
+    vector<vector<int>>::iterator it = v.begin();
+ 
+    // Remove the second vector from a 2-D vector
+    v.erase(it + 1);
+  ```
+
 
 #### Iterators and standard algorithms
 An iterator is an object designed to traverse through a **container**, providing access to each element along the way.
 
-examples
+Examples:
 * array - this container might offer a forwards iterator, that walks through the array in a forwards order.
 * Pointers are iterators - they traverse data stored sequentially. 
 * `std::begin()` and `std::end()`.
 
 ##### Intro to Standard Library Algorithms:
-There are 3 categories: `<algorithm>`
+There are 3 categories: `<algorithm>` [more details](https://www.learncpp.com/cpp-tutorial/introduction-to-standard-library-algorithms/)
 * Inspectors - view but not modify data in container (e.g. searching and counting)
   * `std::find()`
 * Mutators - modify data in container (e.g. sorting/shuffling)
   * `std::sort()`
-* Facilitators - used to generate results from values in data
+  * Examples:
+    * `std::sort(arr.begin(), arr.end())` - sort in ascending order.
+    * `std::sort(arr.begin(), arr.end(), greater);` - call our *custom* greater function
+    * [A custom sorting function example (great example shows the use of callable's)]
+* Facilitators - used to generate results from each value in data
   * `std::for_each()`
+  ```
+    void doubleNumber(int& i)
+  {
+      i *= 2;
+  } 
+
+  std::for_each(arr.begin(), arr.end(), doubleNumber); // pass a function by reference
+  ```
 
 ### Chapter 11 - Functions V3
+#### Passing functions as arguments
+```
+int foo(int x) { return x; }
+
+// We can treate function pointers like variables
+int (*fcnPtr)(int){ &foo }; // Initialize fcnPtr with function foo
+(*fcnPtr)(5); // call function foo(5) through fcnPtr.
+
+// call this in another function
+void selectionSort(int* array, int size, bool (*comparisonFcn)(int, int))
+
+// It is also convenient to use an alias for this function pointer e.g.
+using ValidateFunction = bool(*)(int, int);
+bool validate(int x, int y, ValidateFunction pfcn);
+```
+
+We can even use the `std::function` as an alternate method of defining and storing function pointers
+```
+#include <functional>
+bool validate(int x, int y, std::function<bool(int, int)> fcn);
+```
+
+#### A note on recursion:
+* Prefer memoisation over plain recursion, to limit the number of function calls and memory allocated on the stack/heap.
+* Prefer iteration over recursion, where possible.
+
+#### Command line arguments:
+`int main(int argc, char* argv[])`
+* **argc** is an integer parameter containing a count of the number of arguments passed to the program (think: argc = argument count). argc will always be at least 1, because the first argument is always the name of the program itself. Each command line argument the user provides will cause argc to increase by 1.
+
+* **argv** is where the actual argument values are stored (think: argv = argument values, though the proper name is “argument vectors”). Although the declaration of argv looks intimidating, argv is really just an array of C-style strings. The length of this array is argc.
+
+#### Ellipses - variadic arguments
+* Uses the `...` argument.
+* No type checking
+* First, if possible, do not use ellipsis at all! 
+* Why ellipsis are dangerous: ellipsis don’t know how many parameters were passed
+  * length parameter
+  * Use a sentinel value - a sentinel is a special value that is used to terminate a loop when it is encountered. For example, with strings, the null terminator is used as a sentinel value to denote the end of the string. 
+  * Use a decoder string - “decoder string” tells the program how to interpret the parameters.
+* Ellipses:
+```
+double findAverage(int count, ...)
+{
+    int sum{ 0 };
+
+    // We access the ellipsis through a va_list, so let's declare one
+    std::va_list list;
+
+    // We initialize the va_list using va_start.  The first parameter is
+    // the list to initialize.  The second parameter is the last non-ellipsis
+    // parameter.
+    va_start(list, count);
+
+    // Loop through all the ellipsis arguments
+    for (int arg{ 0 }; arg < count; ++arg)
+    {
+         // We use va_arg to get parameters out of our ellipsis
+         // The first parameter is the va_list we're using
+         // The second parameter is the type of the parameter
+         sum += va_arg(list, int);
+    }
+
+    // Cleanup the va_list when we're done.
+    va_end(list);
+
+    return static_cast<double>(sum) / count;
+}
+```
+* Not only do the ellipsis throw away the type of the parameters, it also throws away the number of parameters in the ellipsis. This means we have to devise our own solution for keeping track of the number of parameters passed into the ellipsis. Typically, this is done in one of three ways.
+
+#### Anonymous functions (lambdas)
 
 ### Chapter 12 - Basic OOP
 
