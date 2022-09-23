@@ -9,6 +9,9 @@ Various other sources will also be used such as:
  3. [Programmiz](https://www.programiz.com/cpp-programming) - this is a great resource because it has several example program files
  and various others.
 
+# Challenge websites:
+[exercism](https://exercism.org/tracks/cpp)
+
 # Notes:
 
 ## Basics
