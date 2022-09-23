@@ -27,7 +27,7 @@ Typical structure:
   - use `<>` for referencing headers that come with the compiler like `iostream`, otherwise use `""`.
   - Each file should explicitly #include all of the header files it needs to compile. Do not rely on headers included transitively from other headers.
   - Use header guards to avoid namespace collision:
-    ```
+    ```cpp
     #ifndef SOME_UNIQUE_NAME_HERE
     #define SOME_UNIQUE_NAME_HERE
 
@@ -54,7 +54,7 @@ The compiler compiles each file individually - it does not check each file again
 **Statements**(line of code) and **expressions** (combination of symbols to be evaluated) are concluded by `;`.
 **Identifier**: a unique name for a varible, class, function etc.
 The entry point of a program is:
-```
+```cpp
 int main()
 {
     // some code
@@ -63,7 +63,7 @@ int main()
 ```
 #### Variables:
 There are varous ways of initialising variables:
-```
+```cpp
 int a;
 int b = 5;
 int d{7};
@@ -82,7 +82,7 @@ Variables can be initalised with expressions and function calls e.g. `int i { ad
 
 #### Defining a function
 Functions are defined as:
-```
+```c
 <return type> <function name>(<arguments>){
     // code
 }
@@ -95,7 +95,7 @@ int add(int a, int b){
 - If a function does not return anything then the return type is `void`.
 - n.b. **Refactoring** is the process of splitting a long function into multiple sub functions.
 - Functions can be declared before they are defined - this is called **forward declaration**. This tells the compiler about the existence of an *identifier*
-```
+```c
 int add(int x, int y); // declare before definition
 ```
 
@@ -105,8 +105,9 @@ We use *can* use forward declarations in the top of the `main.cpp` script so tha
 E.g. the same function name/identifier is used across multiple files, but the functions have *different* definitions. This will cause a **linker** error.
 **Namespace**(s) are a region that allows you to declare names inside of it for the the purpose of avoiding collisions.
 Any name not defined inside a class,function or namespace is considerd part of the **global namespace**.
-```
-## namespace contents are accessed with: the `::` operator
+
+```cpp
+// namespace contents are accessed with: the `::` operator
 std::cout
 ```
 Namespaces can also be activated using a directive: `using namespace std` which tells the compile to check the std namespace when looking for identifiers with no prefix. But this is *not* recommeneded.
@@ -119,13 +120,13 @@ This tells the preprocessor to include the contents of another file, such as `#i
 Like any variable it doesnt have to be initialised.
 ##### if, ifndef, if 0
 We can use these for debugging purposes.
-```
+```cpp
 #ifndef VARIABLE
-this code will not be run if VARIABLE has not been defined
+// this code will not be run if VARIABLE has not been defined
 #endif
 
 #if 0
-this code will not be run
+// this code will not be run
 #end if
 ```
 
@@ -152,7 +153,7 @@ Booleans:
  - set the value as either `true` or `false`. `bool b1 {true}`.
 #### Conditions:
 - if statement:
-```
+```cpp
 if (statement1){
     //***
 } else if (statement2) {
@@ -165,7 +166,7 @@ it can also be written without blocks:
 `if (age >= 21) purchaseBeer()`
 
 - while loop:
-```
+```cpp
 while (condition)
 {
       if (....)
@@ -177,7 +178,7 @@ while (condition)
 ```
 - switch statement:
 Because all the statements that are satisfied (TRUE) are executed a `break` statement should be used, as well as a `default statement`.
-```
+```cpp
 switch(expression) {
   case x:
     // code block
@@ -191,7 +192,7 @@ switch(expression) {
 ```
 - do while statement:
 A do while statement is a looping construct that works just like a while loop, except the statement always executes at least once. After the statement has been executed, the do-while loop checks the condition. If the condition evaluates to true, the path of execution jumps back to the top of the do-while loop and executes it again.
-```
+```cpp
 do 
 {
   // this will be executed right away and again if the while condition is met.
@@ -202,7 +203,7 @@ while (condition)
 }
 ```
 - for statement:
-```
+```cpp
 for (int x = 0 ; x < 10 ; ++x )
 {
   //code to loop through
@@ -224,11 +225,13 @@ This is especially useful for converting from signed to unsigned and vice versa.
 
 #### std::string
 strings arent a fundamental data type - they are a **compound type** declared in the C standard library.
-```
+```cpp
 std::string myName {"Louis"}; //initialise a string as such.
 ```
+
 To enter a full line of text use something like `std::getline()` with `std::ws()`. The latter tells std::cin to ignore any leading whitespace.
-```
+
+```cpp
 std::cout << "Enter your age: ";
 std::string age{};
 std::getline(std::cin >> std::ws, age); 
@@ -236,7 +239,7 @@ std::getline(std::cin >> std::ws, age);
 The length of a string can be determined with: `STRING.length()`
 
 Also note that std::string::length() returns an unsigned integral value (most likely size_t). If you want to assign the length to an int variable, you should static_cast it to avoid compiler warnings about signed/unsigned conversions:
-```
+```cpp
 int length = static_cast<int>(myName.length());
 ```
 #### Literals, constants
@@ -244,7 +247,7 @@ A constant is a fixed value that may not be changed.
 Literal constants are unamed values inserted directly into the code - like the number 5 or 6e3.
 Constants can be intialised with the `const` keyword.
 such as:
-```
+```c
 // const values must be initialised
 const double gravity = 9.98;
 ```
@@ -252,28 +255,28 @@ const double gravity = 9.98;
 
 ### Chapter 5 operators
 #### Some operators:
-                                        | Operator            | Description          |
-                                        | ------------------- | -------------------- |
-                                        |    `%`              |                      |
-                                        |    `++`             |                      |
-                                        |    `--`             |                      |               
-                                        |    `&`              |                      |
-                                        |    `*`              |                      |
-                                        |    `*=`             |                      |
-                                        |    `/=`             |                      |
-                                        |    `%=`             |                      |
-                                        | `+=` and `-=`       |                      |
-                                        |     `?:`            |                      |
-                                        |   `new`             |                      |
-                                        |  `delete`           |                      |
-                                        |  `&&` or `&`        |                      |
-                                        | `||` or `|`         |                      |
-                                        |    `^`              |                      |
-                                        |    `!=`             |                      |
+    | Operator            | Description          |
+    | ------------------- | -------------------- |
+    |    `%`              |                      |
+    |    `++`             |                      |
+    |    `--`             |                      |               
+    |    `&`              |                      |
+    |    `*`              |                      |
+    |    `*=`             |                      |
+    |    `/=`             |                      |
+    |    `%=`             |                      |
+    | `+=` and `-=`       |                      |
+    |     `?:`            |                      |
+    |   `new`             |                      |
+    |  `delete`           |                      |
+    |  `&&` or `&`        |                      |
+    | `||` or `|`         |                      |
+    |    `^`              |                      |
+    |    `!=`             |                      |
 
 #### exponentiation & math functions
 We need the `cmath` library.
-```
+```c
 #include <cmath>
 double x {std::Pow(3,4) // this gives 3^{4} }
 ```
@@ -296,7 +299,7 @@ See [Bitwise manipulation](https://www.learncpp.com/cpp-tutorial/o-1-bit-flags-a
 ### Chapter 6
 #### User defined namespaces
 Define namespaces with
-```
+```cpp
 namespace foo // this is the name of my namespace
 {
   int add(int x, int y)
@@ -332,7 +335,7 @@ foo::add(1,2)
     We could define a variable in another file such as:
     
      - `constants.h `
-    ```
+    ```cpp
     #ifndef CONSTANTS_H
     #define CONSTANTS_H
 
@@ -348,7 +351,7 @@ foo::add(1,2)
     ```
 
     - `constants.cpp`.
-    ```
+    ```cpp
     #include "constants.h"
 
     namespace constants
@@ -361,7 +364,7 @@ foo::add(1,2)
     ```
     
     - `main.cpp`
-    ```
+    ```cpp
     #include <iostream>
 
     extern int g_x; // this extern is a forward declaration of a variable named g_x that is defined somewhere else
@@ -408,7 +411,7 @@ foo::add(1,2)
 
 #### (Pseudo) Random Number Generators
 We can use the Mersenne Twister algorithm
-```
+```cpp
 #include <iostream>
 #include <random> // for std::mt19937
 
@@ -447,7 +450,7 @@ int main()
 #### Functional overloading
 Function overloading allows us to create multiple functions with the *same name*, so long as each identically named function has *different parameters* (or the functions can be otherwise differentiated).
 E.g.
-```
+```cpp
 int add(int x, int y) // integer version
 {
     return x + y;
@@ -466,7 +469,7 @@ Ex. `void print(int x, int y=4)`
 #### Function templates
 This is an alternative to function overloading and allows us to create a function template when we want to use inputs with different input and output types.
 
-```
+```cpp
 // template for the max class
 // the arguments and returns will be of type T.
 template <typename T> 
@@ -483,13 +486,13 @@ max<int>(1,2)
 ### Chapter 9 - intro to: references, pointers, pass by address, enums, structs
 
 #### lvalue & rvalue:
-
+TODO
 
 #### References:
  - A reference is an alias for an existing object. Once a reference has been defined, any operation on the reference is applied to the object being referenced.
  - A reference is essentially identical to the object being referenced.
  - References can be created  with the `&` operator, placed next to the type.
-```
+```cpp
 int      // a normal int type
 int&     // an lvalue reference to an int object
 double&  // an lvalue reference to a double object
@@ -508,7 +511,7 @@ ref = 6;
  - passing by reference avoids making expesnive copies
  - THis is done by `<return> <function>(<type>& arg)`.
 For example
-```
+```cpp
 void foo(int a, char& b, const std::string& c)
 {
   c[a] = b; // modify the string c which will modify the original string
@@ -527,7 +530,7 @@ void foo(int a, char& b, const std::string& c)
  - pointers are initialised using the `*` operator after the type such as `int* ptr` which initialises a pointer to an integer.
  - `int* ptr{ &x }` this pointer variable holds the adddress of x
  - We can change what the pointer points to by assigning it to the address of another variable.
- ```
+ ```cpp
  // Initialise a pointer that points to the integer x
  int x{ 5 };
  int* ptr{ &x };
@@ -549,7 +552,7 @@ void foo(int a, char& b, const std::string& c)
 
 #### Pass by address
 To do this we specify the function argument as a pointer e.g.
-```
+```cpp
 void print(int* ptr)
 {
     if (ptr) // if ptr is not a null pointer
@@ -577,7 +580,7 @@ Notes:
 We can define our own types, below is the user defined type defined in the header file:
 
 `Fraction.h`
-```
+```cpp
 #ifndef FRACTION_H
 #define FRACTION_H
 
@@ -614,7 +617,7 @@ We can initialise this with something like: `Fraction frac{ 3, 4 };` which creat
 
 ##### Taking enums as inputs examples
 The compiler and commands like `cin` don't explicitly know how to interpret inputs when dealing with enums.
-```
+```cpp
 int main()
 {
     std::cout << "Enter a pet (0=cat, 1=dog, 2=pig, 3=whale): ";
@@ -636,7 +639,7 @@ The struct is only a blueprint for creating variables and needs to be initialise
 * Structs can have members of     *different* types.
 
 Structs can have the values assigned initally or be assigned with a list of sorts.
-```
+```cpp
 // struct definition
 struct Employee
 {
@@ -648,7 +651,7 @@ struct Employee
 Employee joe {1, 60000.0}
 
 // update single value
-Emplyee joe {joe.id, 70000.0}
+Employee joe {joe.id, 70000.0}
 ```
 ##### Structs as argguments
 * Structs can be passed in by reference and address and the `.` can be used.
@@ -709,7 +712,7 @@ We must also use a loop to `delete[]` each row array individually.
 #### For-each loops
 These are of the form `for (<type> <element> : <array>) {...}`.
 There are several variations of this:
-```
+```cpp
 // some numbers to iterate over
 int Fibonacci[] {1,1,2,3,5,8,13,21}
 
@@ -766,7 +769,7 @@ Generally these should be avoided but they are neat!
 * `vector<vector<>>` means we are creating a vector for which each element is a vector
 * we can access elements with `v[i][j]`.
 * Example: removing a row using iterators
-  ```
+  ```cpp
       // Iterator for the 2-D vector
     vector<vector<int>>::iterator it = v.begin();
  
@@ -795,7 +798,7 @@ There are 3 categories: `<algorithm>` [more details](https://www.learncpp.com/cp
     * [A custom sorting function example (great example shows the use of callable's)]
 * Facilitators - used to generate results from each value in data
   * `std::for_each()`
-  ```
+  ```cpp
     void doubleNumber(int& i)
   {
       i *= 2;
@@ -806,7 +809,7 @@ There are 3 categories: `<algorithm>` [more details](https://www.learncpp.com/cp
 
 ### Chapter 11 - Functions V3
 #### Passing functions as arguments
-```
+```cpp
 int foo(int x) { return x; }
 
 // We can treate function pointers like variables
@@ -846,7 +849,7 @@ bool validate(int x, int y, std::function<bool(int, int)> fcn);
   * Use a sentinel value - a sentinel is a special value that is used to terminate a loop when it is encountered. For example, with strings, the null terminator is used as a sentinel value to denote the end of the string. 
   * Use a decoder string - “decoder string” tells the program how to interpret the parameters.
 * Ellipses:
-```
+```cpp
 double findAverage(int count, ...)
 {
     int sum{ 0 };
