@@ -20,12 +20,13 @@ Various other sources will also be used such as:
 
 ### How code is compiled:
 Preprocessor
+TODO
 
 ### File Structure
 Typical structure:
 - Header files - e.g. `add.h`
   - extension `.h`(sometimes `.hpp`).
-  - generally should **not** contain function and varibale definitions.
+  - generally should **not** contain function and variable definitions.
   - it should include forward delcarations of the functions (just the name and args). 
   - use `<>` for referencing headers that come with the compiler like `iostream`, otherwise use `""`.
   - Each file should explicitly #include all of the header files it needs to compile. Do not rely on headers included transitively from other headers.
@@ -763,7 +764,7 @@ Generally these should be avoided but they are neat!
 * values can be inserted with `.push_back()` or removed with `pop_back()` or `.erase()` which takes the position.
 * It can also be **resized** with `.resize` which will allocate more elements with 0 entries (default value for the type). This is very computationally expensive so try to avoid it!
 
-## we can declare 2D arrays like
+#### we can declare 2D arrays like
 * `vector<vector<int>> v {{1, 0, 1}, {0, 1}, {1, 0, 1}};` [see](https://www.journaldev.com/42023/2d-vectors-in-c-plus-plus)
   * This initialises the matrix `v`:
     1 0 1
